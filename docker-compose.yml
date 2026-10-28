@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sql_mastery_db
+    restart: always
+    environment:
+      POSTGRES_USER: course_user
+      POSTGRES_PASSWORD: course_password
+      POSTGRES_DB: course_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./:/course_materials:ro
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: sql_mastery_pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@sqllab.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
